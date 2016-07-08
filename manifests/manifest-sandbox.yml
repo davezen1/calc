@@ -13,3 +13,5 @@ applications:
   command: bash cf.sh
   stack: cflinuxfs2
   timeout: 180
+  env:
+    DISABLE_COLLECTSTATIC: 1

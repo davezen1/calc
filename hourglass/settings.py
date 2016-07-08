@@ -123,9 +123,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-if not DEBUG:
-    STATICFILES_STORAGE = ('whitenoise.storage.'
-                           'CompressedManifestStaticFilesStorage')
+# if not DEBUG:
+#     STATICFILES_STORAGE = ('whitenoise.storage.'
+#                            'CompressedManifestStaticFilesStorage')
 
 STATICFILES_DIRS = (
     # os.path.join(BASE_DIR, 'static'),
@@ -140,6 +140,9 @@ STATICFILES_FINDERS = (
 # Usually compressor is disabled when DEBUG is True,
 # but we enable it manually here for dev-prod parity
 COMPRESS_ENABLED = True
+
+if not DEBUG:
+    COMPRESS_OFFLINE = True
 
 PAGINATION = 200
 
