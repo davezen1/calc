@@ -23,11 +23,9 @@ env:
   - PHANTOMJS_TIMEOUT=15
   - DEBUG=yup
   - DATABASE_URL=postgres://postgres@localhost/hourglass
-before_deploy:
-- npm install
-- npm run gulp -- build
 deploy:
   edge: true
+  skip_cleanup: true
   provider: cloudfoundry
   username: deploy-hourglass
   password:
