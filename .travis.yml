@@ -8,6 +8,8 @@ matrix:
 before_install:
 - pip install codeclimate-test-reporter
 - npm install -g gulp-cli
+- npm --version
+- node --version
 after_success:
 - codeclimate-test-reporter
 install:
