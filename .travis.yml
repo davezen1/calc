@@ -11,6 +11,9 @@ after_success:
 - codeclimate-test-reporter
 install:
 - pip install -r requirements.txt
+- npm install
+before_script:
+- npm run gulp -- build
 script:
 - phantomjs --version
 - echo "For details on why we're ignoring selenium tests, see https://github.com/18F/calc/issues/330"
@@ -20,6 +23,9 @@ env:
   - PHANTOMJS_TIMEOUT=15
   - DEBUG=yup
   - DATABASE_URL=postgres://postgres@localhost/hourglass
+before_deploy:
+- npm install
+- npm run gulp -- build
 deploy:
   edge: true
   provider: cloudfoundry
