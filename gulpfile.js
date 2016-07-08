@@ -3,7 +3,6 @@ var sass = require('gulp-sass');
 var watch = require('gulp-watch');
 var minifycss = require('gulp-minify-css');
 var rename = require('gulp-rename');
-var gzip = require('gulp-gzip');
 var gutil = require('gulp-util');
 
 var dirs = {
@@ -11,7 +10,7 @@ var dirs = {
     style: 'hourglass_site/static_source/style/',
   },
   dest: {
-    style: 'hourglass_site/static/hourglass_site/style/',
+    style: 'hourglass_site/static/hourglass_site/style/built/',
   }
 };
 
@@ -19,29 +18,22 @@ var paths = {
   sass: '**/*.scss',
 };
 
+// default task
 // running `gulp` will default to watching and dist'ing files
 gulp.task('default', ['watch']);
 
-// production build
+// production build task
 // will need to run before collectstatic
-// `npm run gulp -- build`
+// `npm run gulp -- build` or `gulp run build` if gulp-cli is installed globally
 gulp.task('build', ['sass']);
 
-
-// compile SASS
+// compile SASS sources
 gulp.task('sass', function () {
     return gulp.src(dirs.src.style + paths.sass)
         .pipe(sass())
         .pipe(gulp.dest(dirs.dest.style))
         .pipe(rename({suffix: '.min'}))
         .pipe(minifycss())
-        .pipe(gulp.dest(dirs.dest.style))
-        .pipe(gzip({
-            threshold: '1kb',
-            gzipOptions: {
-                level: 9
-            }
-        }))
         .pipe(gulp.dest(dirs.dest.style));
 });
 
