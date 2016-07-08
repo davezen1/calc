@@ -37,5 +37,5 @@ deploy:
   space: calc-dev
   manifest: manifests/manifest-staging.yml
   on:
-    branch: develop
+    branch: django-compressor
 sudo: required
