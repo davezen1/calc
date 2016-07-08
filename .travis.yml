@@ -25,7 +25,6 @@ env:
   - DATABASE_URL=postgres://postgres@localhost/hourglass
 deploy:
   edge: true
-  skip_cleanup: true
   provider: cloudfoundry
   username: deploy-hourglass
   password:
