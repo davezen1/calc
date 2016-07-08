@@ -13,6 +13,7 @@ To install the requirements, use:
 
 ```sh
 pip install -r requirements.txt
+npm install
 ```
 
 CALC is a [Django] project. You can configure everything by running:
@@ -40,8 +41,20 @@ From there, you're just a hop, skip and a jump away from your own dev server:
 ./manage.py runserver
 ```
 
-If you are managing https://calc.gsa.gov or any other cloud.gov-based
-deployment, see [`deploy.md`][].
+In another terminal, you will also need to run `gulp` to watch and rebuild static assets (currently just [SASS][] files).
+Note that if you are using our [Docker setup](#using-docker-optional), this will be handled for you.
+
+```sh
+npm run gulp
+```
+
+If you just want to build the assets once without watching for changes, run
+
+```sh
+npm run gulp -- build
+```
+
+If you are managing https://calc.gsa.gov or any other cloud.gov-based deployment, see [`deploy.md`][].
 
 ## Testing
 
@@ -59,27 +72,6 @@ py.test --cov
 
 For more information on running only specific tests, see
 [`py.test` Usage and Invocations][pytest].
-
-## CSS
-
-We use [SASS][] for our CSS needs.
-
-To build SASS:
-
-```sh
-cd hourglass_site/static/hourglass_site
-make
-```
-
-To continuously watch SASS for changes and rebuild:
-
-```sh
-cd hourglass_site/static/hourglass_site
-make watch-style
-```
-
-Note that if you're using Docker for development, SASS will automatically
-be rebuilt for you.
 
 ## Using Docker (optional)
 
