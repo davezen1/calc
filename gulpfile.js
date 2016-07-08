@@ -45,7 +45,7 @@ gulp.task('sass', function () {
         .pipe(gulp.dest(dirs.dest.style));
 });
 
-// watch files for chnages
+// watch files for changes
 gulp.task('watch', ['sass'], function () {
     gulp.watch(dirs.src.style + paths.sass, ['sass']);
 });
