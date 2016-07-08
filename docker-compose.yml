@@ -20,10 +20,10 @@ db:
   environment:
     - POSTGRES_DB=calc
     - POSTGRES_USER=calc_user
-sass:
+gulp:
   build: .
   volumes:
     - .:/calc
-  working_dir: /calc/hourglass_site/static/hourglass_site
+  working_dir: /calc/
   entrypoint: python /calc/docker_django_management.py
-  command: make watch-style
+  command: sh -c "npm install && npm run gulp"

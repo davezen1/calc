@@ -11,8 +11,10 @@ RUN \
   mv /tmp/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/ /srv/var/phantomjs && \
   ln -s /srv/var/phantomjs/bin/phantomjs /usr/bin/phantomjs
 
+RUN curl -sL https://deb.nodesource.com/setup_5.x | bash -
+
 RUN apt-get update && \
-  apt-get install -y ruby-full rubygems && \
+  apt-get install -y ruby-full rubygems nodejs && \
   gem install sass
 
 COPY requirements.txt /calc/
