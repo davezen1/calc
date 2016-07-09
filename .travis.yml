@@ -7,6 +7,7 @@ matrix:
   fast_finish: true
 before_install:
 - pip install codeclimate-test-reporter
+- rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
 - npm install -g gulp-cli
 - npm --version
 - node --version
@@ -25,6 +26,7 @@ env:
   - PHANTOMJS_TIMEOUT=15
   - DEBUG=yup
   - DATABASE_URL=postgres://postgres@localhost/hourglass
+  - TRAVIS_NODE_VERSION=5.10.0
 deploy:
   edge: true
   skip_cleanup: true
