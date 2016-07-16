@@ -26,8 +26,9 @@
   },
   "scripts": {
     "gulp": "gulp",
-    "eslint": "eslint . || true",
-    "failable-eslint": "eslint ."
+    "eslint": "eslint '**/*.js' || true",
+    "tap-eslint": "eslint '**/*.js' -f tap || true",
+    "failable-eslint": "eslint '**/*.js'"
   },
   "repository": {
     "type": "git",

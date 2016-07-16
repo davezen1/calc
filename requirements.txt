@@ -21,3 +21,5 @@ PyJWT==1.4.0
 requests==2.10.0
 python-dotenv==0.5.1
 httmock==1.2.5
+pytest-tap==1.9
+tap.py==1.9
