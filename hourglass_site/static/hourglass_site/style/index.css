@@ -310,7 +310,7 @@ input[type="checkbox"]:checked ~ label {
 
 
 .help-text {
-  clear: both;  
+  clear: both;
   color: #757575;
   margin-bottom: 1em;
 }
@@ -348,6 +348,7 @@ div.filters .filter {
   float: left;
 }
 .filters {
+  overflow-wrap: break-word;
   text-transform: lowercase;
 }
 .filters .education-filter a {
@@ -657,7 +658,7 @@ input[type="radio"]:focus + .checkbox-focus {
 
 .contract-list-item:last-of-type {
   border: none;
-  margin-right: -1px;  
+  margin-right: -1px;
 }
 
 .contract-list-item:not(:first-child) {
