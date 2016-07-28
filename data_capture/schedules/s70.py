@@ -11,6 +11,8 @@ from contracts.management.commands.load_data import FEDERAL_MIN_CONTRACT_RATE
 
 logger = logging.getLogger(__name__)
 
+BAD_ROW_THRESHOLD = 1
+
 
 def safe_cell_str_value(sheet, rownum, colnum, coercer=None):
     val = ''
@@ -27,6 +29,14 @@ def safe_cell_str_value(sheet, rownum, colnum, coercer=None):
             pass
 
     return str(val)
+
+
+def is_likely_row(sheet, rownum, rowlen=13):
+    # check that the given row's cells are not empty
+    for col in range(0, rowlen):
+        if not safe_cell_str_value(sheet, rownum, col).strip():
+            return False
+    return True
 
 
 def glean_labor_categories_from_file(f, sheet_name='(3)Labor Categories'):
@@ -51,19 +61,25 @@ def glean_labor_categories_from_file(f, sheet_name='(3)Labor Categories'):
 
     rownum = 3
     cats = []
+    bad_row_count = 0
 
     while True:
         cval = functools.partial(safe_cell_str_value, sheet, rownum)
 
-        sin = cval(0)
-
-        # We basically just keep going until we run into a row that
-        # doesn't have a SIN.
-        if not sin.strip():
-            break
+        if not is_likely_row(sheet, rownum):
+            bad_row_count += 1
+            if bad_row_count == BAD_ROW_THRESHOLD:
+                # If we've hit the threshold of continuous bad rows, then quit
+                break
+            else:
+                # Else continue and try the next row
+                continue
+        else:
+            # Reset the count of continuous bad rows
+            bad_row_count = 0
 
         cat = {}
-        cat['sin'] = sin
+        cat['sin'] = cval(0)
         cat['labor_category'] = cval(1)
         cat['education_level'] = cval(2)
         cat['min_years_experience'] = cval(3, coercer=int)
