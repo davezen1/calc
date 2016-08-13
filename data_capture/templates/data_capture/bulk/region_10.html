@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Upload Region 10 Data{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'frontend/built/style/data_capture.min.css' %}">
+{% endblock head %}
+
+{# TODO: We'll use the slim header more often so it should be the default #}
+
+{# Eliminate the header extension so we have a "slim" header. #}
+{% block header_extension %}{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h1>Upload Region 10 Data</h1>
+
+  <p>Use this page to upload an export of Region 10 data.</p>
+
+  {% include 'data_capture/bulk/region_10_form.html' %}
+</div>
+{% endblock body %}

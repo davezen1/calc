@@ -124,3 +124,35 @@ def step_4(request):
     return render(request, 'data_capture/step_4.html', {
         'step_number': 4
     })
+
+
+# TODO: restrict to administrator role
+@login_required
+def bulk_region_10(request):
+    if request.method == 'GET':
+        form = forms.BulkRegion10Form()
+    elif request.method == 'POST':
+        form = forms.BulkRegion10Form(request.POST, request.FILES)
+
+        if form.is_valid():
+            redirect_url = reverse('data_capture:step_2')
+            if request.is_ajax():
+                return JsonResponse({'redirect_url': redirect_url})
+            return HttpResponseRedirect(redirect_url)
+        else:
+            add_generic_form_error(request, form)
+
+    ctx = {
+        'form': form,
+        'show_debug_ui': settings.DEBUG and not settings.HIDE_DEBUG_UI
+    }
+
+    if request.is_ajax():
+        return JsonResponse({
+            'form_html': render_to_string(
+                'data_capture/bulk/region_10_form.html',
+                RequestContext(request, ctx)
+            )
+        })
+
+    return render(request, 'data_capture/bulk/region_10.html')

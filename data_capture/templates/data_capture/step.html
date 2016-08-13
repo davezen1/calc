@@ -12,32 +12,28 @@
 {% block header_extension %}{% endblock %}
 
 {% block body %}
-
 <div class="container">
+  <h1>Add price data to CALC</h1>
 
-<h1>Add price data to CALC</h1>
+  {% block step_heading %}{% endblock %}
 
-{% block step_heading %}{% endblock %}
+  <ol class="steps">
+    <li {% if step_number == 1 %}class="current"{% endif %}>
+      <label>Upload price list</label>
+    </li>
+    <li {% if step_number == 2 %}class="current"{% endif %}>
+      <label>Validate data</label>
+    </li>
+    <li {% if step_number == 3 %}class="current"{% endif %}>
+      <label>Contract details</label>
+    </li>
+    <li {% if step_number == 4 %}class="current"{% endif %}>
+      <label>Submit data</label>
+    </li>
+  </ol>
 
-<ol class="steps">
-  <li {% if step_number == 1 %}class="current"{% endif %}>
-    <label>Upload price list</label>
-  </li>
-  <li {% if step_number == 2 %}class="current"{% endif %}>
-    <label>Validate data</label>
-  </li>
-  <li {% if step_number == 3 %}class="current"{% endif %}>
-    <label>Contract details</label>
-  </li>
-  <li {% if step_number == 4 %}class="current"{% endif %}>
-    <label>Submit data</label>
-  </li>
-</ol>
+  {% include 'data_capture/messages.html' %}
 
-{% include 'data_capture/messages.html' %}
-
-{% block step_body %}{% endblock %}
-
+  {% block step_body %}{% endblock %}
 </div>
-
 {% endblock %}

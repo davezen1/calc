@@ -1,0 +1,30 @@
+<form enctype="multipart/form-data" method="post"
+  action="{% url 'data_capture:bulk_region_10' %}">
+
+  {% csrf_token %}
+
+  {% if request.is_ajax %}
+  {% include 'data_capture/messages.html' %}
+  {% endif %}
+
+  {{ form.non_field_errors }}
+
+  <div class="upload">
+    <input type="file" name="{{ form.file.html_name }}"
+           id="{{ form.file.id_for_label }}" accept=".xlsx,.xls,.csv">
+    <div class="upload-chooser">
+      <label for="{{ form.file.id_for_label }}">Choose file</label>
+      <span class="js-only" aria-hidden="true">or drag and drop here.</span>
+      <span>XLS, XLSX, or CSV format, please.</span>
+    </div>
+  </div>
+
+  <div class="form-button-row clearfix">
+    <div class="submit-group">
+      <span class="submit-label">
+        Upload and review results
+      </span>
+      <button type="submit" class="button-primary">Submit</button>
+    </div>
+  </div>
+</form>
