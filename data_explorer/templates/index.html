@@ -11,8 +11,39 @@
   <link rel="stylesheet" href="{% static 'frontend/style/vendor/vex.css' %}" />
   <link rel="stylesheet" href="{% static 'frontend/style/vendor/vex-theme-default.css' %}" />
 <![endif]-->
-
 {% endblock %}
+
+{% block header_extension %}
+<div class="row">
+  <div class="twelve columns">
+    <h1 class="description-main">Search awarded ceiling rates for labor categories</h1>
+    <h2 class="description-secondary">CALC lets you conduct market research on professional service labor categories more quickly and easily - helping you make informed decisions. Results shown are awarded hourly rates from GSA IDIQ service schedules.</h2>
+
+    <div class="row price-callout">
+      <div class="three columns">
+        <img class="ceiling-icon" src="/static/frontend/images/price-callout/roof.png">
+        <p>Ceiling prices</p>
+        <p>Maximum prices paid</p>
+      </div>
+      <div class="three columns">
+        <img class="fully-burdened-icon" src="/static/frontend/images/price-callout/mule.png">
+        <p>Fully burdened costs</p>
+        <p>Wages + additional labor costs</p>
+      </div>
+      <div class="three columns">
+        <img src="/static/frontend/images/price-callout/breifcase.png">
+        <p>Professional services</p>
+        <p>GSA schedule data</p>
+      </div>
+      <div class="three columns">
+        <img src="/static/frontend/images/price-callout/globe.png">
+        <p>Worldwide rates</p>
+        <p>Rates apply anywhere</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock header_extension %}
 
 {% block body %}
 <form id="search" class="search" role="form">
