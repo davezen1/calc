@@ -7,4 +7,4 @@ require('jquery-tablesort');
 
 require('./tablesort');
 require('./upload');
-require('./step_1');
+require('./ajaxform');

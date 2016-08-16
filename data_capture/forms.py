@@ -2,6 +2,7 @@ from django import forms
 
 from .models import SubmittedPriceList
 from .schedules import registry
+from frontend.upload import UploadWidget
 
 
 class Step1Form(forms.Form):
@@ -9,7 +10,7 @@ class Step1Form(forms.Form):
         choices=registry.get_choices
     )
 
-    file = forms.FileField()
+    file = forms.FileField(widget=UploadWidget())
 
     def clean(self):
         cleaned_data = super().clean()

@@ -1,32 +1,37 @@
-/* global QUnit $ test window */
+/* global QUnit $ test window QUNIT_FIXTURE_DATA */
 
 const urlParse = require('url').parse;
 const sinon = require('sinon');
 
-const step1 = window.testingExports__step_1;
+const ajaxform = window.testingExports__ajaxform;
 
 let server;
 
-QUnit.module('step_1', {
+QUnit.module('ajaxform', {
   beforeEach() {
     server = sinon.fakeServer.create();
-    $('[data-step1-form]').remove();
+    $('[data-ajaxform]').remove();
   },
   afterEach() {
-    $('[data-step1-form]').remove();
+    $('[data-ajaxform]').remove();
     server.restore();
   },
 });
 
 function createBlob(content) {
-  if (typeof window.Blob === 'function') {
+  // If in PhantomJS 1.x
+  if (window.WebKitBlobBuilder) {
+    const builder = new window.WebKitBlobBuilder();
+    builder.append(content);
+    return builder.getBlob();
+  }
+
+  // In a more modern engine with Blob support
+  if (window.Blob) {
     return new window.Blob([content]);
   }
 
-  // We're in PhantomJS.
-  const builder = new window.WebKitBlobBuilder();
-  builder.append(content);
-  return builder.getBlob();
+  throw new Error('Unable to determine how to create Blob');
 }
 
 function advancedTest(name, cb) {
@@ -38,27 +43,19 @@ function advancedTest(name, cb) {
 
 function makeFormHtml(extraOptions) {
   const options = Object.assign({
-    uploadAttrs: '',
+    isDegraded: false,
     fooValue: 'bar',
   }, extraOptions || {});
+  const $form = $('<div></div>')
+    .html(QUNIT_FIXTURE_DATA.AJAXFORM_TESTS_HTML);
 
-  return `
-    <form enctype="multipart/form-data" method="post"
-          data-step1-form
-          action="/post-stuff">
-      <input type="text" name="foo" value="${options.fooValue}">
-      <div class="upload" ${options.uploadAttrs}>
-        <input type="file" name="file"
-               id="id_file" accept=".xlsx,.xls,.csv">
-        <div class="upload-chooser">
-          <label for="id_file">Choose file</label>
-          <span class="js-only" aria-hidden="true">or drag+drop here.</span>
-          XLS, XLSX, or CSV format, please.
-        </div>
-      </div>
-      <button type="submit">submit</button>
-    </form>
-  `;
+  if (options.isDegraded) {
+    $form.find('.upload').attr('data-force-degradation', '');
+  }
+
+  $form.find('input[name="foo"]').attr('value', options.fooValue);
+
+  return $form.html();
 }
 
 function addForm(extraOptions) {
@@ -66,11 +63,11 @@ function addForm(extraOptions) {
     .html(makeFormHtml(extraOptions))
     .appendTo('body')
     .hide();
-  return step1.bindForm();
+  return ajaxform.bindForm();
 }
 
-test('bindForm() returns null when data-step1-form not on page', assert => {
-  assert.strictEqual(step1.bindForm(), null);
+test('bindForm() returns null when data-ajaxform not on page', assert => {
+  assert.strictEqual(ajaxform.bindForm(), null);
 });
 
 test('submit btn disabled on startup', assert => {
@@ -92,7 +89,7 @@ test('submit btn enabled on upload widget changefile', assert => {
 });
 
 test('degraded input does not cancel form submission', assert => {
-  const s = addForm({ uploadAttrs: 'data-force-degradation' });
+  const s = addForm({ isDegraded: true });
 
   $(s.form).on('submit', e => {
     assert.ok(!e.isDefaultPrevented());
@@ -143,7 +140,7 @@ advancedTest('form_html replaces form & rebinds it', assert => {
     })
   );
 
-  const sNew = $(step1.getForm()).data('step1-form');
+  const sNew = $(ajaxform.getForm()).data('ajaxform');
 
   assert.ok(sNew);
   assert.ok(sNew !== s);
@@ -157,7 +154,7 @@ advancedTest('redirect_url redirects browser', assert => {
   s.upload.file = createBlob('blah');
   $(s.form).submit();
 
-  const delegate = step1.setDelegate({ redirect: sinon.spy() });
+  const delegate = ajaxform.setDelegate({ redirect: sinon.spy() });
 
   server.requests[0].respond(
     200,
@@ -176,7 +173,7 @@ advancedTest('500 results in alert', assert => {
   s.upload.file = createBlob('blah');
   $(s.form).submit();
 
-  const delegate = step1.setDelegate({ alert: sinon.spy() });
+  const delegate = ajaxform.setDelegate({ alert: sinon.spy() });
 
   server.requests[0].respond(500);
 
@@ -191,7 +188,7 @@ advancedTest('unrecognized 200 results in alert', assert => {
   s.upload.file = createBlob('blah');
   $(s.form).submit();
 
-  const delegate = step1.setDelegate({ alert: sinon.spy() });
+  const delegate = ajaxform.setDelegate({ alert: sinon.spy() });
 
   server.requests[0].respond(200);
 

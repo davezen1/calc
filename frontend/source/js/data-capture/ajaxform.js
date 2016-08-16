@@ -13,7 +13,7 @@ let delegate = {
 };
 
 function getForm() {
-  return $('[data-step1-form]')[0];
+  return $('[data-ajaxform]')[0];
 }
 
 function replaceForm(html) {
@@ -32,7 +32,6 @@ function bindForm() {
   const $submit = $('button[type=submit]', form);
 
   if (!form) {
-    // We're not on step 1.
     return null;
   }
 
@@ -41,8 +40,19 @@ function bindForm() {
   const upload = $fileInput.data('upload');
   const self = { form, upload, $upload, $fileInput, $submit };
 
+  if (!upload) {
+    // Presently we require an ajaxform to contain exactly one
+    // upload widget; we'd like to change this at some point in the
+    // future, but for now we'll make our expectations explicit.
+    throw new Error('ajaxform must contain an upload widget');
+  }
+
+  if (!$submit.length) {
+    throw new Error('ajaxform must contain a <button type="submit">');
+  }
+
   // This is mostly just for test suites to use.
-  $('form').data('step1-form', self);
+  $('form').data('ajaxform', self);
 
   // Disable the submit button until a file is selected.
   $submit.prop('disabled', true);
@@ -89,9 +99,7 @@ function bindForm() {
         method: form.method,
       });
 
-      // TODO: Use a CSS class to do this. Add a throbber or progress
-      // bar or something.
-      $(form).css({ opacity: 0.25, 'pointer-events': 'none' });
+      $(form).addClass('submit-in-progress');
 
       req.done((data) => {
         if (data.form_html) {
@@ -101,11 +109,13 @@ function bindForm() {
           delegate.redirect(data.redirect_url);
         } else {
           delegate.alert(`Invalid server response: ${data}`);
+          $(form).removeClass('submit-in-progress');
         }
       });
 
       req.fail(() => {
         delegate.alert('An error occurred when submitting your data.');
+        $(form).removeClass('submit-in-progress');
       });
     }
   });
@@ -122,4 +132,4 @@ exports.setDelegate = newDelegate => {
 exports.getForm = getForm;
 exports.bindForm = bindForm;
 
-window.testingExports__step_1 = exports;
+window.testingExports__ajaxform = exports;

@@ -5,8 +5,8 @@
 {% block title %}Style Guide{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'frontend/built/styles/data_explorer.min.css' %}">
-<link rel="stylesheet" href="{% static 'frontend/built/styles/data_capture.min.css' %}">
+<link rel="stylesheet" href="{% static 'frontend/built/style/data_explorer.min.css' %}">
+<link rel="stylesheet" href="{% static 'frontend/built/style/data_capture.min.css' %}">
 <link rel="stylesheet" href="{% static 'styleguide/styleguide.css' %}">
 <link rel="stylesheet" href="{% static 'styleguide/vendor/prism.css' %}">
 {% endblock %}
@@ -39,7 +39,7 @@
   </ul>
   {% endexample %}
 
-  {% guide_section "Upload Widget" %}
+  {% guide_section "Ajax Form + Upload Widget" %}
 
   <p>
     Our upload widget is implemented using the techniques outlined in
@@ -48,42 +48,24 @@
     and Drop File Uploading</a> by Osvaldas Valutis.
   </p>
 
+  <h3>Form Submission</h3>
+
   <p>
-    The upload widget's <code>&lt;input&gt;</code> element does not currently
-    support the <code>multiple</code> attribute, however&mdash;it is intended
-    for single-file uploads only.
+    Due to the technical limitations of HTML5, forms containing the
+    progressively-enhanced upload widget must be submitted via ajax. This can
+    be accomplished via a custom Ajax Form component.
   </p>
 
   <p>
-    If the <code>accept</code> attribute on the <code>&lt;input&gt;</code>
-    element is set, then simple file type validation will be done when a file
-    is dropped, or when the user initiates their file chooser via a click.
-    The upload widget's file data will not be set when an invalid file type
-    is dropped.
-  </p>
-
-  {% example %}
-  <form enctype="multipart/form-data">
-    <div class="upload">
-      <input type="file" name="file" id="file" accept=".xlsx,.xls,.csv">
-      <div class="upload-chooser">
-        <label for="file">Choose file</label>
-        <span class="js-only" aria-hidden="true">or drag and drop here.</span>
-        <span>XLS, XLSX, or CSV format, please.</span>
-      </div>
-    </div>
-  </form>
-  {% endexample %}
-
-  <p>
-    When the page is first loaded, all <code>.upload</code> elements are
-    automatically activated. However, if you dynamically inject content
-    into the page via Ajax, you'll want to manually activate them via
-    code like this:
+    For a simple Ajax Form code example, see
+    {% pathname 'styleguide/ajaxform_example.py' %}.
   </p>
 
   <div class="styleguide-example">
-    <pre><code class="language-js">$('.my-new-content .upload').uploadify();</code></pre>
+    <div class="rendering">
+      <h3 class="example-heading">Example</h3>
+      {% include "styleguide_ajaxform_example.html" %}
+    </div>
   </div>
 
   <h3>Graceful Degradation</h3>
@@ -97,58 +79,9 @@
   <div class="styleguide-example">
     <div class="rendering">
       <h3 class="example-heading">Example (no JavaScript)</h3>
-        <div class="upload" data-force-degradation>
-          <input type="file" name="file2" id="file2" accept=".xlsx,.xls,.csv">
-          <div class="upload-chooser">
-            <label for="file2">Choose file</label>
-            <span class="js-only" aria-hidden="true">or drag and drop here.</span>
-            <span>XLS, XLSX, or CSV format, please.</span>
-          </div>
-        </div>
+      {{ degraded_upload_widget }}
     </div>
   </div>
-
-  <h3>Form Submission</h3>
-
-  <p>
-    Due to the technical limitations of HTML5, when the upload widget isn't
-    degraded, you can't rely on the <code>&lt;input&gt;</code> element to
-    contain the user's file; you need to obtain a
-    <code><a href="https://developer.mozilla.org/en-US/docs/Web/API/File">File</a></code>
-    object from the upload widget, attach it to
-    <code><a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData">FormData</a></code>,
-    and send the form via Ajax.
-  </p>
-
-  <p>
-    The following code can be used to accomplish this:
-  </p>
-
-  <div class="styleguide-example">
-  <pre><code class="language-js">var data, upload = $('#file').data('upload');
-
-if (upload.isDegraded) {
-  // The upload widget is degraded; we should assume the browser has
-  // minimal HTML5 support and just let the user submit the form manually.
-} else {
-  if (upload.file) {
-    data = new FormData(upload.input.form);
-    data.delete('file');
-    data.append('file', upload.file);
-
-    // Now we can send the data via Ajax.
-  } else {
-    alert("You need to choose a file!");
-  }
-}
-</code></pre>
-  </div>
-
-  <p>
-    Furthermore, due to the aforementioned technical limitations, you
-    should not add any HTML5 validation attributes like <code>required</code>
-    to the <code>&lt;input&gt;</code> element either.
-  </p>
 
   {% guide_section "Buttons" %}
 

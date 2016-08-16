@@ -2,16 +2,13 @@ import json
 from functools import wraps
 from django.conf import settings
 from django.shortcuts import render, redirect
-from django.template import RequestContext
-from django.template.loader import render_to_string
-from django.http import JsonResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template.defaultfilters import pluralize
 
 from . import forms
 from .schedules import registry
+from frontend import ajaxform
 
 
 def add_generic_form_error(request, form):
@@ -35,28 +32,20 @@ def step_1(request):
             request.session['data_capture:gleaned_data'] = \
                 registry.serialize(form.cleaned_data['gleaned_data'])
 
-            redirect_url = reverse('data_capture:step_2')
-            if request.is_ajax():
-                return JsonResponse({'redirect_url': redirect_url})
-            return HttpResponseRedirect(redirect_url)
+            return ajaxform.redirect(request, 'data_capture:step_2')
         else:
             add_generic_form_error(request, form)
 
-    ctx = {
-        'step_number': 1,
-        'form': form,
-        'show_debug_ui': settings.DEBUG and not settings.HIDE_DEBUG_UI
-    }
-
-    if request.is_ajax():
-        return JsonResponse({
-            'form_html': render_to_string(
-                'data_capture/step_1_form.html',
-                RequestContext(request, ctx)
-            )
-        })
-
-    return render(request, 'data_capture/step_1.html', ctx)
+    return ajaxform.render(
+        request,
+        context={
+            'step_number': 1,
+            'form': form,
+            'show_debug_ui': settings.DEBUG and not settings.HIDE_DEBUG_UI
+        },
+        template_name='data_capture/step_1.html',
+        ajax_template_name='data_capture/step_1_form.html',
+    )
 
 
 def gleaned_data_required(f):

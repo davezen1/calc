@@ -1,2 +1,2 @@
-require('./step_1_tests');
+require('./ajaxform_tests');
 require('./upload_tests');

@@ -1,7 +1,9 @@
+import os.path
 from textwrap import dedent
 
 from django import template
 from django.utils.safestring import SafeString
+from django.utils.html import escape
 from django.utils.text import slugify
 
 
@@ -40,6 +42,24 @@ class GuideNode(template.Node):
         del context['_sections']
 
         return result
+
+
+@register.simple_tag
+def pathname(name):
+    '''
+    Outputs the given project-relative path wrapped in a <code> tag.
+
+    If the path doesn't exist, raises an exception. This is primarily
+    done to prevent documentation rot.
+    '''
+
+    my_dir = os.path.abspath(os.path.dirname(__file__))
+    root_dir = os.path.normpath(os.path.join(my_dir, '..', '..'))
+
+    if not os.path.exists(os.path.join(root_dir, name)):
+        raise Exception('Path %s does not exist' % name)
+
+    return SafeString('<code>%s</code>' % escape(name))
 
 
 @register.simple_tag(takes_context=True)

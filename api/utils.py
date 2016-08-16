@@ -1,24 +1,4 @@
 
-import math
-import statistics
-
-
-def stdev(values):
-    """
-    Returns the population (or "unbiased") standard deviation
-    for the given values.
-    """
-    # This replaced numpy.std(), which calculates the population
-    # standard deviation, and not the sample standard deviation.
-    # statistics.stdev calculates the sample sample deviation, but in
-    # order to get the same value as previous calculated with have to
-    # use the square root of statistics.pvariance.
-    if (len(values) == 0):
-        # mirror numpy.std functionality of returning nan when input is empty
-        return float('nan')
-    # else standard dev is the square root of the variance
-    return math.sqrt(statistics.pvariance(values))
-
 
 def get_histogram(values, num_bins=10):
     """

@@ -1,10 +1,9 @@
 
 import unittest
-import math
 import random
 import decimal
 
-from api.utils import get_histogram, stdev
+from api.utils import get_histogram
 
 
 class HistogramTests(unittest.TestCase):
@@ -59,18 +58,3 @@ class HistogramTests(unittest.TestCase):
         mn = min(values)
         self.assertEqual(bins[0]['min'], mn)
         self.assertEqual(bins[-1]['max'], mx)
-
-
-class StandardDeviationTests(unittest.TestCase):
-
-    def test_returns_nan_on_empty_input(self):
-        values = []
-        self.assertTrue(math.isnan(stdev(values)))
-
-    def test_returns_zero_when_values_are_same(self):
-        values = [1, 1, 1]
-        self.assertEqual(0, stdev(values))
-
-    def test_retuns_standard_deviation(self):
-        values = [10, 20, 30, 40, 50]
-        self.assertAlmostEqual(14.1421356, stdev(values))

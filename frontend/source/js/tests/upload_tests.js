@@ -1,13 +1,6 @@
-/* global QUnit jQuery document test */
+/* global QUnit jQuery document test QUNIT_FIXTURE_DATA */
 (function uploadTests(QUnit, $) {
-  const UPLOAD_HTML = (
-    '<div class="upload">' +
-    '<input type="file" name="file" id="file" accept=".csv, application/test">' +
-    '<div class="upload-chooser">' +
-    '<label for="file">Choose file or drag and drop here</label>' +
-    '</div>' +
-    '</div>'
-  );
+  const UPLOAD_HTML = QUNIT_FIXTURE_DATA.UPLOAD_TESTS_HTML;
 
   let upload;
   let input;

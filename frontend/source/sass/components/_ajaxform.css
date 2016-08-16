@@ -1,0 +1,4 @@
+form[data-ajaxform].submit-in-progress {
+  opacity: 0.25;
+  pointer-events: none;
+}

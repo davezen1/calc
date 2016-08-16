@@ -1,0 +1,19 @@
+<form enctype="multipart/form-data" method="post"
+      data-ajaxform
+      action="{% url 'styleguide:ajaxform' %}">
+  {% csrf_token %}
+
+  {% with form=ajaxform_form %}
+    {{ form.non_field_errors }}
+    {{ form.question.errors }}
+    {{ form.question.label }}
+    {{ form.question }}
+    {{ form.on_valid_submit.errors }}
+    {{ form.on_valid_submit.label }}
+    {{ form.on_valid_submit }}
+    {{ form.file.errors }}
+    {{ form.file }}
+  {% endwith %}
+
+  <button type="submit" class="button-primary">Submit</button>
+</form>

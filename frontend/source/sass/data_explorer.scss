@@ -96,27 +96,28 @@ span.dollars {
 }
 
 .filter-title {
-  padding-bottom: .3em;
+  padding-bottom: 0;
 }
 
 .filter-block {
   background: $color-gray-lightest;
   border-radius: 4px;
-  margin-bottom: 2em;
+  margin-bottom: 0;
   padding: 1rem 2rem;
 }
+
 
 @media (min-width: 550px) {
   .filter-container {
     float: right;
-    margin-bottom: 3em;
+    margin-bottom: 1em;
   }
 }
 
 /* multiselect filter */
-
-.dropdown {
+dl.dropdown {
   margin-bottom: 1.5rem;
+  margin-top: .2em;
   dd,
   dt {
     margin:0px;
@@ -163,7 +164,11 @@ span.dollars {
   }
   dt a {
     background-color: $color-white;
-    border: 1px solid $color-gray-lighter;
+    background-image: url(../../images/uswds/arrow-down.svg);
+    background-position: right 1.3rem center;
+    background-repeat: no-repeat;
+    background-size: 1.3rem;
+    border: 1px solid $color-base;
     border-radius: 4px;
     box-shadow: none;
     box-sizing: border-box;
@@ -183,6 +188,7 @@ span.dollars {
   input {
     margin-bottom: 0;
     margin-right: 6px;
+    width: auto;
   }
 }
 
@@ -197,6 +203,7 @@ span.dollars {
 .multiSel,
 .mutliSelect fieldset {
   margin-bottom: 0;
+  width: auto;
 }
 
 input[type="checkbox"]:checked ~ label {
@@ -267,16 +274,26 @@ input[type="checkbox"]:checked ~ label {
 .proposed-price {
   float: right;
   input {
+    margin: 0;
     width: 135px;
+    display: inline-block;
   }
   .go {
     padding: 0 10px;
     cursor: pointer;
+    display: block;
+    float: right;
+    margin-left: 0.4rem;
   }
 }
 
 .proposed-price-title {
   font-size: 16px;
+}
+
+.avg-price-block h5,
+.standard-deviation-block h5 {
+    margin-bottom: 0;
 }
 
 #avg-price-highlight,

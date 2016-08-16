@@ -18,6 +18,10 @@
   <body>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
+    <script>
+      {% load qunit_fixture_data %}
+      var QUNIT_FIXTURE_DATA = {% qunit_fixture_data_json %};
+    </script>
     <script src="{% static 'frontend/built/js/data-capture/index.min.js' %}"></script>
     <script src="{% static 'frontend/js/vendor/qunit-1.16.0.js' %}"></script>
     <script src="{% static 'frontend/js/hourglass_tests.js' %}"></script>

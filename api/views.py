@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.db.models import Avg, Max, Min, Count, Q
+from django.db.models import Avg, Max, Min, Count, Q, StdDev
 from decimal import Decimal
 
 from rest_framework.response import Response
@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from api.pagination import ContractPagination
 from api.serializers import ContractSerializer
-from api.utils import get_histogram, stdev
+from api.utils import get_histogram
 from contracts.models import Contract, EDUCATION_CHOICES
 
 import csv
@@ -148,27 +148,18 @@ class GetRates(APIView):
             request.query_params.get('contract-year'))
         contracts_all = self.get_queryset(request.query_params, wage_field)
 
-        page_stats = {}
-        current_rates = []
+        stats = contracts_all.aggregate(
+            Min(wage_field), Max(wage_field),
+            Avg(wage_field), StdDev(wage_field))
 
-        page_stats['minimum'] = contracts_all.aggregate(Min(wage_field))[
-            wage_field + '__min']
-        page_stats['maximum'] = contracts_all.aggregate(Max(wage_field))[
-            wage_field + '__max']
-        page_stats['average'] = quantize(
-            contracts_all.aggregate(Avg(wage_field))[wage_field + '__avg'])
-
-        for rate in contracts_all.values(wage_field):
-            # its common for the wage_field to have an empty value
-            if rate.get(wage_field):
-                current_rates.append(rate[wage_field])
-
-        if current_rates:
-            std_dev = stdev(current_rates)
-        else:
-            std_dev = None
-
-        page_stats['first_standard_deviation'] = std_dev
+        page_stats = {
+            'minimum': stats[wage_field + '__min'],
+            'maximum': stats[wage_field + '__max'],
+            'average': quantize(stats[wage_field + '__avg']),
+            'first_standard_deviation': quantize(
+                stats[wage_field + '__stddev']
+            )
+        }
 
         if bins and bins.isnumeric():
             values = contracts_all.values_list(wage_field, flat=True)
