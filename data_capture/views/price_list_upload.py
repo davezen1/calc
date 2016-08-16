@@ -1,22 +1,12 @@
 import json
 from functools import wraps
-from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.template.defaultfilters import pluralize
 
-from . import forms
-from .schedules import registry
+from .. import forms
+from ..schedules import registry
+from .utils import add_generic_form_error
 from frontend import ajaxform
-
-
-def add_generic_form_error(request, form):
-    messages.add_message(
-        request, messages.ERROR,
-        'Oops, please correct the error{} below and try again.'
-            .format(pluralize(form.errors))
-    )
 
 
 @login_required
@@ -112,30 +102,3 @@ def step_4(request):
     return render(request, 'data_capture/step_4.html', {
         'step_number': 4
     })
-
-
-# TODO: restrict to administrator role
-@login_required
-def bulk_region_10(request):
-    if request.method == 'GET':
-        form = forms.BulkRegion10Form()
-    elif request.method == 'POST':
-        form = forms.BulkRegion10Form(request.POST, request.FILES)
-
-        if form.is_valid():
-            # TODO: set into session
-            # request.session['data_capture:bulk_region_10'] = \
-            #     form.cleaned_data['gleaned_data']
-            return ajaxform.redirect(request, 'bulk_region_10:step_2')
-        else:
-            add_generic_form_error(request, form)
-
-    return ajaxform.render(
-        request,
-        context={
-            # 'step_number': 1,
-            'form': form,
-        },
-        template_name='data_capture/bulk/region_10.html',
-        ajax_template_name='data_capture/bulk/region_10_form.html',
-    )
