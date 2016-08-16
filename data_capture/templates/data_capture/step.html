@@ -1,15 +1,6 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'data_capture/base.html' %}
 
 {% block title %}Add price data to CALC / {% block subtitle %}{% endblock %}{% endblock %}
-
-{% block head %}
-<script src="{% static 'frontend/built/js/data-capture/index.min.js' %}"></script>
-<link rel="stylesheet" href="{% static 'frontend/built/style/data_capture.min.css' %}">
-{% endblock %}
-
-{# Eliminate the header extension so we have a "slim" header. #}
-{% block header_extension %}{% endblock %}
 
 {% block body %}
 <div class="container">
