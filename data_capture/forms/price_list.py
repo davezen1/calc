@@ -43,18 +43,3 @@ class Step3Form(forms.ModelForm):
             'contract_start',
             'contract_end',
         ]
-
-
-class BulkRegion10Form(forms.Form):
-    '''
-    Form for bulk upload of Region 10 data export
-    '''
-    file = forms.FileField(widget=UploadWidget())
-
-    def clean(self):
-        cleaned_data = super().clean()
-
-        # TODO: parse the data
-        # file = cleaned_data.get('file')
-
-        return cleaned_data

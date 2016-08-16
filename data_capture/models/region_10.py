@@ -62,8 +62,21 @@ class SubmittedRegion10ExportRow(models.Model):
     # current_price = models.DecimalField(max_digits=10, decimal_places=2)
     contract_year = models.IntegerField(null=True, blank=True)
 
+    export = models.ForeignKey(
+        SubmittedRegion10Export,
+        on_delete=models.CASCADE,
+        related_name='rows'
+    )
+
+    contract_model = models.OneToOneField(
+        Contract,
+        # TODO: CASCADE instead?
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
     def __str__(self):
         # This is really just so price list rows don't appear as
         # 'SubmittedPriceListRow object' in Django admin.
-
         return 'Submitted region 10 export row'
