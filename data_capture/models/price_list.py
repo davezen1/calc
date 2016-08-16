@@ -53,7 +53,7 @@ class SubmittedPriceList(models.Model):
 
     def get_schedule_title(self):
         # We're importing here to avoid a circular import. Kinda icky.
-        from .schedules.registry import get_class
+        from ..schedules.registry import get_class
 
         return get_class(self.schedule).title
 
