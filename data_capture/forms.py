@@ -49,7 +49,7 @@ class BulkRegion10Form(forms.Form):
     '''
     Form for bulk upload of Region 10 data export
     '''
-    file = forms.FileField()
+    file = forms.FileField(widget=UploadWidget())
 
     def clean(self):
         cleaned_data = super().clean()

@@ -124,24 +124,22 @@ def bulk_region_10(request):
         form = forms.BulkRegion10Form(request.POST, request.FILES)
 
         if form.is_valid():
-            redirect_url = reverse('data_capture:step_2')
-            if request.is_ajax():
-                return JsonResponse({'redirect_url': redirect_url})
-            return HttpResponseRedirect(redirect_url)
+            # TODO: set into session
+            # request.session['data_capture:bulk_region_10'] = \
+            #     form.cleaned_data['gleaned_data']
+            return ajaxform.redirect(request, 'bulk_region_10:step_2')
         else:
             add_generic_form_error(request, form)
 
-    ctx = {
-        'form': form,
-        'show_debug_ui': settings.DEBUG and not settings.HIDE_DEBUG_UI
-    }
-
-    if request.is_ajax():
-        return JsonResponse({
-            'form_html': render_to_string(
-                'data_capture/bulk/region_10_form.html',
-                RequestContext(request, ctx)
-            )
-        })
-
-    return render(request, 'data_capture/bulk/region_10.html')
+    return ajaxform.render(
+        request,
+        context={
+            # 'step_number': 1,
+            'form': form,
+            # TODO: should this just be included in default context so
+            # we don't have to keep repeating it?
+            'show_debug_ui': settings.DEBUG and not settings.HIDE_DEBUG_UI
+        },
+        template_name='data_capture/bulk/region_10.html',
+        ajax_template_name='data_capture/bulk/region_10_form.html',
+    )
