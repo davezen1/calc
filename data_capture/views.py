@@ -40,8 +40,7 @@ def step_1(request):
         request,
         context={
             'step_number': 1,
-            'form': form,
-            'show_debug_ui': settings.DEBUG and not settings.HIDE_DEBUG_UI
+            'form': form
         },
         template_name='data_capture/step_1.html',
         ajax_template_name='data_capture/step_1_form.html',
@@ -136,9 +135,6 @@ def bulk_region_10(request):
         context={
             # 'step_number': 1,
             'form': form,
-            # TODO: should this just be included in default context so
-            # we don't have to keep repeating it?
-            'show_debug_ui': settings.DEBUG and not settings.HIDE_DEBUG_UI
         },
         template_name='data_capture/bulk/region_10.html',
         ajax_template_name='data_capture/bulk/region_10_form.html',

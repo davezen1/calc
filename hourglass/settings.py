@@ -95,6 +95,7 @@ AUTHENTICATION_BACKENDS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'hourglass.context_processors.api_host',
+    'hourglass.context_processors.show_debug_ui',
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
