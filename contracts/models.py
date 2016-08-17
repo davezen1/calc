@@ -3,6 +3,7 @@ from django.db import models
 from djorm_pgfulltext.models import SearchManager, SearchQuerySet
 from djorm_pgfulltext.fields import VectorField
 
+from data_capture.models.bulk_upload import BulkUploadContractSource
 
 EDUCATION_CHOICES = (
     ('HS', 'High School'),
@@ -152,6 +153,12 @@ class Contract(models.Model):
     sin = models.TextField(null=True, blank=True)
 
     search_index = VectorField()
+
+    upload_source = models.ForeignKey(
+        BulkUploadContractSource,
+        null=True,
+        on_delete=models.CASCADE,
+    )
 
     # use a manager that filters by current contracts with a valid
     # current_price

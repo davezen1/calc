@@ -4,7 +4,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 
 from .schedules import registry
-from .models import SubmittedPriceList, SubmittedPriceListRow
+from .models.price_list import SubmittedPriceList, SubmittedPriceListRow
 
 
 class SubmittedPriceListRowInline(admin.TabularInline):
