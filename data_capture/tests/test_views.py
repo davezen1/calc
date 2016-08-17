@@ -2,7 +2,7 @@ import json
 from django.test import TestCase, override_settings
 from django.contrib.auth.models import User
 
-from ..models import SubmittedPriceList
+from ..models.price_list import SubmittedPriceList
 from ..schedules.fake_schedule import FakeSchedulePriceList
 from ..schedules import registry
 from .common import FAKE_SCHEDULE, FAKE_SCHEDULE_EXAMPLE_PATH

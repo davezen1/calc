@@ -157,6 +157,7 @@ class Contract(models.Model):
     upload_source = models.ForeignKey(
         BulkUploadContractSource,
         null=True,
+        blank=True,
         on_delete=models.CASCADE,
     )
 

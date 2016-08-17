@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from contracts.models import Contract
 from ..schedules import registry
 from ..schedules.fake_schedule import FakeSchedulePriceList
-from ..models import SubmittedPriceList, SubmittedPriceListRow
+from ..models.price_list import SubmittedPriceList, SubmittedPriceListRow
 from .common import FAKE_SCHEDULE
 
 

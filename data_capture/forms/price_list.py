@@ -1,7 +1,7 @@
 from django import forms
 
-from .models import SubmittedPriceList
-from .schedules import registry
+from ..models.price_list import SubmittedPriceList
+from ..schedules import registry
 from frontend.upload import UploadWidget
 
 

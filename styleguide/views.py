@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import render
 
-from data_capture.forms import UploadWidget
+from frontend.upload import UploadWidget
 from . import ajaxform_example
 
 
