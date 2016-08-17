@@ -18,7 +18,7 @@ def region_10_step_1(request):
 
         if form.is_valid():
             request.session['data_capture:bulk_region_10_data'] = \
-                form.cleaned_data['gleaned_data']
+                form.cleaned_data['results']
             return ajaxform.redirect(
                 request,
                 'data_capture:bulk_region_10_step_2'
