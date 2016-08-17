@@ -12,9 +12,9 @@ from frontend import ajaxform
 def region_10_step_1(request):
     '''Start of Region 10 Bulk Upload - Upload the spreadsheet'''
     if request.method == 'GET':
-        form = forms.BulkRegion10Form()
+        form = forms.Region10BulkUploadForm()
     elif request.method == 'POST':
-        form = forms.BulkRegion10Form(request.POST, request.FILES)
+        form = forms.Region10BulkUploadForm(request.POST, request.FILES)
 
         if form.is_valid():
             request.session['data_capture:bulk_region_10_data'] = \

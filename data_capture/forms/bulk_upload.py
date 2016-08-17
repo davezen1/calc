@@ -8,7 +8,7 @@ def file_to_contracts(file):
     return [{'foo': 'bar'}]
 
 
-class BulkRegion10Form(forms.Form):
+class Region10BulkUploadForm(forms.Form):
     '''
     Form for bulk upload of Region 10 data export
     '''
