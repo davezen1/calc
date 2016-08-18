@@ -1,12 +1,12 @@
-from django.core.management.base import BaseCommand
-from django.conf import settings
-
-import csv
 import os
 import logging
 
+from django.core.management.base import BaseCommand
+from django.conf import settings
+from django.core.management import call_command
+
 from contracts.models import Contract
-from contracts.loaders.region_10 import load_from_something
+from contracts.loaders.region_10 import Region10Loader
 
 
 class Command(BaseCommand):
@@ -19,8 +19,18 @@ class Command(BaseCommand):
         log.info("Deleting existing contract records")
         Contract.objects.all().delete()
 
-        data_file = csv.reader(
-            open(os.path.join(settings.BASE_DIR,
-                              'contracts/docs/hourly_prices.csv'), 'r'))
+        filename = os.path.join(settings.BASE_DIR,
+                                'contracts/docs/hourly_prices.csv')
 
-        load_from_something(data_file)
+        log.info("Processing new datafile")
+
+        contracts = Region10Loader().load_file(filename)
+
+        log.info("Inserting records")
+        Contract.objects.bulk_create(contracts)
+
+        log.info("Updating search index")
+        call_command('update_search_field',
+                     Contract._meta.app_label, Contract._meta.model_name)
+
+        log.info("End load_data task")
