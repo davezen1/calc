@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from .common import path
 from .test_models import ModelTestCase
 from ..schedules import s70, registry
-from contracts.management.commands.load_data import FEDERAL_MIN_CONTRACT_RATE
+from contracts.loaders.region_10 import FEDERAL_MIN_CONTRACT_RATE
 
 
 S70 = '%s.Schedule70PriceList' % s70.__name__

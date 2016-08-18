@@ -5,9 +5,8 @@ from datetime import date
 from django.core.management import call_command
 from django.test import TestCase
 
-from contracts.management.commands.load_s70 import (
-    FEDERAL_MIN_CONTRACT_RATE, Schedule70Loader
-)
+from contracts.loaders.region_10 import FEDERAL_MIN_CONTRACT_RATE
+from contracts.loaders.schedule_70 import Schedule70Loader
 from contracts.models import Contract
 from contracts.mommy_recipes import get_contract_recipe
 

@@ -7,7 +7,7 @@ import xlrd
 from .base import BasePriceList
 from ..utils import safe_cell_str_value
 from contracts.models import EDUCATION_CHOICES
-from contracts.management.commands.load_data import FEDERAL_MIN_CONTRACT_RATE
+from contracts.loaders.region_10 import FEDERAL_MIN_CONTRACT_RATE
 
 
 logger = logging.getLogger(__name__)
