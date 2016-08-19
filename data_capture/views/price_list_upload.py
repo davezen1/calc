@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from .. import forms
 from ..schedules import registry
-from .utils import add_generic_form_error
+from .common import add_generic_form_error
 from frontend import ajaxform
 
 

@@ -1,0 +1,20 @@
+{% extends 'data_capture/bulk/region_10_step.html' %}
+
+{% block subtitle %}Select File{% endblock %}
+
+{% block step_heading %}
+<p>Upload an exported Region 10 Pricing Database spreadsheet into CALC.</p>
+{% endblock step_heading %}
+
+{% block step_body %}
+  {% include 'data_capture/bulk/region_10_step_1_form.html' %}
+
+  {% if show_debug_ui %}
+    {% load static %}
+    <p style="color: gray">
+      <strong>Developers:</strong>
+      Download <a href="{% static 'data_capture/r10_export_sample.xlsx' %}"><code>r10_export_sample.xlsx</code></a>
+      to use as an example Region 10 bulk export to load.
+    </p>
+  {% endif %}
+{% endblock step_body %}

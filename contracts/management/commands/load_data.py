@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.core.management import call_command
 
-from contracts.models import Contract
+from contracts.models import Contract, BulkUploadContractSource
 from contracts.loaders.region_10 import Region10Loader
 
 
@@ -24,7 +24,18 @@ class Command(BaseCommand):
 
         log.info("Processing new datafile")
 
-        contracts = Region10Loader().load_file(filename)
+        # create BulkUploadContractSource to associate with the new Contracts
+        f = open(filename, 'rb')
+        upload_source = BulkUploadContractSource.objects.create(
+            has_been_loaded=True,
+            original_file=f.read(),
+            procurement_center=BulkUploadContractSource.REGION_10
+        )
+        f.close()
+
+        contracts = Region10Loader().load_file(
+            filename, upload_source=upload_source
+        )
 
         log.info("Inserting records")
         Contract.objects.bulk_create(contracts)

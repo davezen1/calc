@@ -5,12 +5,28 @@ from django.core.exceptions import ValidationError
 import xlrd
 
 from .base import BasePriceList
-from ..utils import safe_cell_str_value
 from contracts.models import EDUCATION_CHOICES
 from contracts.loaders.region_10 import FEDERAL_MIN_CONTRACT_RATE
 
 
 logger = logging.getLogger(__name__)
+
+
+def safe_cell_str_value(sheet, rownum, colnum, coercer=None):
+    val = ''
+
+    try:
+        val = sheet.cell_value(rownum, colnum)
+    except IndexError:
+        pass
+
+    if coercer is not None:
+        try:
+            val = coercer(val)
+        except ValueError:
+            pass
+
+    return str(val)
 
 
 def glean_labor_categories_from_file(f, sheet_name='(3)Labor Categories'):

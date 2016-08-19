@@ -4,10 +4,11 @@
 
 {% block body %}
 <div class="container">
-  <h1>Add price data to CALC</h1>
+  <h1>{% block heading %}Add price data to CALC{% endblock heading %}</h1>
 
   {% block step_heading %}{% endblock %}
 
+  {% block steps %}
   <ol class="steps">
     <li {% if step_number == 1 %}class="current"{% endif %}>
       <label>Upload price list</label>
@@ -22,6 +23,7 @@
       <label>Submit data</label>
     </li>
   </ol>
+  {% endblock steps %}
 
   {% include 'data_capture/messages.html' %}
 

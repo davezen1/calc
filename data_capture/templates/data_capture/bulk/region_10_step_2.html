@@ -1,0 +1,30 @@
+{% extends 'data_capture/bulk/region_10_step.html' %}
+
+{% block subtitle %}Confirm Load{% endblock subtitle %}
+
+{% block step_body %}
+  {% with total=file_metadata.num_rows %}
+    {% if total %}
+      <p>{{ total }} row{{ total|pluralize }} were found in the uploaded spreadsheet.</p>
+
+      <p>This will purge all existing Region 10 data and replace it with the new data.</p>
+    {% else %}
+      <p>No rows were found in the uploaded spreadsheet. Please check your file and <a href="{% url 'data_capture:bulk_region_10_step_1' %}">try again</a>.</p>
+    {% endif %}
+
+    <div class="form-button-row clearfix">
+      <a href="{% url 'data_capture:bulk_region_10_step_1' %}" class="button button-previous">Previous</a>
+
+      <a href="{% url 'index' %}" class="button button-cancel">Cancel</a>
+
+      {% if total %}
+      <div class="submit-group">
+        <span class="submit-label">
+          Load data and view results
+        </span>
+        <a href="{% url 'data_capture:bulk_region_10_step_3' %}" class="button button-primary">Confirm</a>
+      </div>
+      {% endif %}
+    </div>
+  {% endwith %}
+{% endblock step_body %}

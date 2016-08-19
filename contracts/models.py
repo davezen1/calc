@@ -1,9 +1,8 @@
 import re
 from django.db import models
+from django.contrib.auth.models import User
 from djorm_pgfulltext.models import SearchManager, SearchQuerySet
 from djorm_pgfulltext.fields import VectorField
-
-from data_capture.models.bulk_upload import BulkUploadContractSource
 
 EDUCATION_CHOICES = (
     ('HS', 'High School'),
@@ -114,6 +113,25 @@ class ContractsQuerySet(SearchQuerySet):
                 .order_by(*args, **kwargs)
 
         return queryset
+
+
+class BulkUploadContractSource(models.Model):
+    '''
+    Model to store provenance of bulk-uploaded contract data
+    '''
+    REGION_10 = 'R10'
+
+    PROCUREMENT_CENTER_CHOICES = (
+        (REGION_10, 'Region 10'),
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    submitter = models.ForeignKey(User, null=True, blank=True)
+    has_been_loaded = models.BooleanField(default=False)
+    original_file = models.BinaryField()
+    procurement_center = models.CharField(
+        db_index=True, max_length=5, choices=PROCUREMENT_CENTER_CHOICES)
 
 
 class Contract(models.Model):

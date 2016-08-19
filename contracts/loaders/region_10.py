@@ -14,11 +14,13 @@ logger = logging.getLogger(__name__)
 class Region10Loader(object):
     header_rows = 1
 
-    def load_file(self, filename, strict=False):
+    def load_file(self, filename, upload_source=None, strict=False):
         with open(filename, 'rU') as f:
-            return list(self.parse(f, strict))
+            return list(
+                self.parse(f, upload_source=upload_source, strict=strict)
+            )
 
-    def parse(self, fileobj, strict=False):
+    def parse(self, fileobj, upload_source=None, strict=False):
         reader = csv.reader(fileobj)
 
         for _ in range(self.header_rows):
@@ -28,7 +30,7 @@ class Region10Loader(object):
 
         for row in reader:
             try:
-                yield self.make_contract(row)
+                yield self.make_contract(row, upload_source=upload_source)
                 count += 1
             except (ValueError, ValidationError) as e:
                 if strict:
@@ -41,7 +43,7 @@ class Region10Loader(object):
         logger.info('rows skipped: {}'.format(skipped))
 
     @classmethod
-    def make_contract(cls, line):
+    def make_contract(cls, line, upload_source=None):
         if line[0]:
             # create contract record, unique to vendor, labor cat
             idv_piid = line[11]
@@ -58,7 +60,7 @@ class Region10Loader(object):
             )
             contract.schedule = line[12]
             contract.business_size = line[8]
-            contract.contract_year = line[14]
+            contract.contract_year = int(float(line[14]))
             contract.sin = line[13]
 
             if line[15] != '':
@@ -69,7 +71,7 @@ class Region10Loader(object):
                     line[16], '%m/%d/%Y').date()
 
             if line[7].strip() != '':
-                contract.min_years_experience = line[7]
+                contract.min_years_experience = int(float(line[7]))
             else:
                 contract.min_years_experience = 0
 
@@ -93,7 +95,7 @@ class Region10Loader(object):
                                              'hourly_rate_year' +
                                              str(line[14]), 0)
                 }
-                current_year = int(line[14])
+                current_year = int(float(line[14]))
                 # we have up to five years of rate data
                 if current_year < 5:
                     price_fields['next_year_price'] = getattr(
@@ -114,5 +116,8 @@ class Region10Loader(object):
                         setattr(contract, field, price)
 
             contract.contractor_site = line[9]
+
+            if upload_source:
+                contract.upload_source = upload_source
 
             return contract

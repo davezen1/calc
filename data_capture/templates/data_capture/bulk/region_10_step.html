@@ -1,0 +1,19 @@
+{% extends 'data_capture/step.html' %}
+
+{% block title %}Upload Region 10 Data / {% block subtitle %}{% endblock %}{% endblock %}
+
+{% block heading %}Upload Region 10 Data{% endblock heading %}
+
+{% block steps %}
+  <ol class="steps">
+    <li {% if step_number == 1 %}class="current"{% endif %}>
+      <label>Upload Export Spreadsheet</label>
+    </li>
+    <li {% if step_number == 2 %}class="current"{% endif %}>
+      <label>Confirm Load</label>
+    </li>
+    <li {% if step_number == 3 %}class="current"{% endif %}>
+      <label>Completed</label>
+    </li>
+  </ol>
+{% endblock steps %}
