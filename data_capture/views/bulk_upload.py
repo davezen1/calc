@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db import transaction
+from django.core.management import call_command
 
 from .. import forms
 from ..utils import Region10SpreadsheetConverter
@@ -91,8 +92,6 @@ def region_10_step_3(request):
     file = ContentFile(upload_source.original_file)
     converter = Region10SpreadsheetConverter(file)
 
-    # parsed_rows = converter.convert()
-
     # Delete existing contracts identified by the same
     # procurement_center
     Contract.objects.filter(
@@ -112,7 +111,8 @@ def region_10_step_3(request):
     # Save new contracts
     Contract.objects.bulk_create(contracts)
 
-    # TODO: Update search index somehow
+    # Update search field on Contract models
+    Contract._fts_manager.update_search_field()
 
     # Update the upload_source
     upload_source.has_been_loaded = True
@@ -120,9 +120,6 @@ def region_10_step_3(request):
 
     # remove the upload_source_id from session
     del request.session['data_capture:upload_source_id']
-
-    print('----------------')
-    print(len(Contract.objects.all()))  # TODO: this is always 0 ???
 
     return render(request, 'data_capture/bulk/region_10_step_3.html', {
         'step_number': 3,

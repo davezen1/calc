@@ -60,7 +60,8 @@ class Region10Loader(object):
             )
             contract.schedule = line[12]
             contract.business_size = line[8]
-            contract.contract_year = int(float(line[14]))
+            current_contract_year = int(float(line[14]))
+            contract.contract_year = current_contract_year
             contract.sin = line[13]
 
             if line[15] != '':
@@ -93,19 +94,18 @@ class Region10Loader(object):
                 price_fields = {
                     'current_price': getattr(contract,
                                              'hourly_rate_year' +
-                                             str(line[14]), 0)
+                                             str(current_contract_year), 0)
                 }
-                current_year = int(float(line[14]))
                 # we have up to five years of rate data
-                if current_year < 5:
+                if current_contract_year < 5:
                     price_fields['next_year_price'] = getattr(
                         contract, 'hourly_rate_year' +
-                        str(current_year + 1), 0
+                        str(current_contract_year + 1), 0
                     )
-                    if current_year < 4:
+                    if current_contract_year < 4:
                         price_fields['second_year_price'] = getattr(
                             contract, 'hourly_rate_year' +
-                            str(current_year + 2), 0
+                            str(current_contract_year + 2), 0
                         )
 
                 # don't create display prices for records where the
