@@ -62,11 +62,7 @@ class Region10SpreadsheetConverter():
             'num_rows': sheet.nrows - 1  # subtract 1 for the header row
         }
 
-    def convert(self):
-        '''
-        Converts the input Region 10 XLS/X spreadsheet to a list
-        of CSV-like rows
-        '''
+    def convert_next(self):
         book = xlrd.open_workbook(file_contents=self.xls_file.read())
 
         datemode = book.datemode  # necessary for Excel date parsing
@@ -74,8 +70,6 @@ class Region10SpreadsheetConverter():
         sheet = book.sheet_by_index(self.sheet_index)
 
         heading_indices = self.get_heading_indices_map(sheet)
-
-        parsed_data = []
 
         # skip the heading row, process the rest
         for rx in range(1, sheet.nrows):
@@ -99,10 +93,17 @@ class Region10SpreadsheetConverter():
                 # index of the row
                 row[csv_col_idx] = str(cell_value)
 
-            parsed_data.append(row)
+            yield row
 
         self.xls_file.seek(0)
-        return parsed_data
+        return
+
+    def convert_file(self):
+        '''
+        Converts the input Region 10 XLS/X spreadsheet to a list
+        of CSV-like rows
+        '''
+        return list(self.convert_next())
 
     def get_heading_indices_map(self, sheet, raises=True):
         '''

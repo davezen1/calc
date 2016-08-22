@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db import transaction
-from django.contrib import messages
 
 from .. import forms
 from ..utils import Region10SpreadsheetConverter
@@ -90,8 +89,9 @@ def region_10_step_3(request):
     upload_source = BulkUploadContractSource.objects.get(pk=upload_source_id)
 
     file = ContentFile(upload_source.original_file)
+    converter = Region10SpreadsheetConverter(file)
 
-    parsed_rows = Region10SpreadsheetConverter(file).convert()
+    # parsed_rows = converter.convert()
 
     # Delete existing contracts identified by the same
     # procurement_center
@@ -101,17 +101,18 @@ def region_10_step_3(request):
 
     contracts = []
     bad_rows = []
-    # Create Contract models
-    for row in parsed_rows:
+
+    for row in converter.convert_next():
         try:
-            c = Region10Loader().make_contract(
-                row, upload_source=upload_source)
+            c = Region10Loader.make_contract(row, upload_source=upload_source)
             contracts.append(c)
         except (ValueError, ValidationError) as e:
             bad_rows.append(row)
 
     # Save new contracts
     Contract.objects.bulk_create(contracts)
+
+    # TODO: Update search index somehow
 
     # Update the upload_source
     upload_source.has_been_loaded = True
@@ -121,10 +122,10 @@ def region_10_step_3(request):
     del request.session['data_capture:upload_source_id']
 
     print('----------------')
-    print(len(Contract.objects.all()))
+    print(len(Contract.objects.all()))  # TODO: this is always 0 ???
 
     return render(request, 'data_capture/bulk/region_10_step_3.html', {
         'step_number': 3,
-        'bad_rows': bad_rows,
+        'num_bad_rows': len(bad_rows),
         'num_contracts': len(contracts),
     })
