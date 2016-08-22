@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import user_passes_test
+
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db import transaction
@@ -13,8 +13,7 @@ from contracts.loaders.region_10 import Region10Loader
 from contracts.models import Contract, BulkUploadContractSource
 
 
-@login_required
-@staff_member_required
+@user_passes_test(lambda u: u.is_staff)
 def region_10_step_1(request):
     '''
     Start of Region 10 Bulk Upload - Upload the spreadsheet
@@ -54,8 +53,7 @@ def region_10_step_1(request):
     )
 
 
-@login_required
-@staff_member_required
+@user_passes_test(lambda u: u.is_staff)
 def region_10_step_2(request):
     '''
     Confirm that the new data should be loaded
@@ -80,8 +78,7 @@ def region_10_step_2(request):
     })
 
 
-@login_required
-@staff_member_required
+@user_passes_test(lambda u: u.is_staff)
 @transaction.atomic
 def region_10_step_3(request):
     '''Load data and show success screen'''

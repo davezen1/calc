@@ -7,6 +7,7 @@ from ..spreadsheet_converter import Region10SpreadsheetConverter
 
 expected_results = [
     ['Project Manager', '123.466', '134.3844', '145.6253', '156.1946', '165.0981', 'Bachelors', '8.0', 'S', 'Both', 'Acme, LLC', 'GS-12F-0123S', 'MOBIS', '123-1, 123-1RC, 456-7, 456-7RC', '2.0', '06/01/2006', '05/31/2021'],  # NOQA
+    ['BAD ROW', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],  # NOQA
     ['Software Developer', '100.0', '101.0', '102.0', '103.0', '104.0', 'Masters', '5.0', 'S', 'Both', 'Foobar Inc', 'GS-12F-0456S', 'MOBIS', '123-2, 456-8', '3.0', '05/01/2010', '05/31/2021'],  # NOQA
     ['QA Engineer', '75.1', '85.2', '95.3', '105.4', '115.5', 'Associates', '2.0', 'O', 'Both', 'Boop Associates', 'GS-12F-0789S', 'MOBIS', '123-3', '1.0', '07/01/2016', '05/31/2021'],  # NOQA
 ]
@@ -75,10 +76,10 @@ class TestRegion10SpreadsheetConverter(TestCase):
             self.assertEqual(expected_results[count], row)
             count += 1
 
-        self.assertEqual(count, 3)
+        self.assertEqual(count, 4)
 
     def test_convert_file(self):
         converter = Region10SpreadsheetConverter(xls_file=r10_file())
         parsed_rows = converter.convert_file()
-        self.assertEqual(len(parsed_rows), 3)
+        self.assertEqual(len(parsed_rows), 4)
         self.assertEqual(expected_results, parsed_rows)
