@@ -1,27 +1,12 @@
 import json
-from django.test import TestCase, override_settings
-from django.contrib.auth.models import User
 
 from ..models import SubmittedPriceList
 from ..schedules.fake_schedule import FakeSchedulePriceList
 from ..schedules import registry
-from .common import FAKE_SCHEDULE, FAKE_SCHEDULE_EXAMPLE_PATH
+from .common import StepTestCase, FAKE_SCHEDULE, FAKE_SCHEDULE_EXAMPLE_PATH
 
 
-@override_settings(
-    # This will make tests run faster.
-    PASSWORD_HASHERS=['django.contrib.auth.hashers.MD5PasswordHasher'],
-    # Ignore our custom auth backend so we can log the user in via
-    # Django 1.8's login helpers.
-    AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend'],
-    DATA_CAPTURE_SCHEDULES=[FAKE_SCHEDULE],
-)
-class StepTestCase(TestCase):
-    def login(self):
-        user = User.objects.create_user(username='foo', password='bar')
-        assert self.client.login(username='foo', password='bar')
-        return user
-
+class PriceListStepTestCase(StepTestCase):
     def set_fake_gleaned_data(self, rows):
         session = self.client.session
         pricelist = FakeSchedulePriceList(rows)
@@ -32,23 +17,8 @@ class StepTestCase(TestCase):
     def setUp(self):
         registry._init()
 
-    def assertRedirectsToLogin(self, url):
-        res = self.client.get(url)
-        self.assertEqual(res.status_code, 302)
-        self.assertEqual(
-            res['Location'],
-            'http://testserver/auth/login?next=%s' % url
-        )
 
-    def assertHasMessage(self, res, tag, content):
-        msgs = list(res.context['messages'])
-        self.assertEqual(len(msgs), 1)
-        m = msgs[0]
-        self.assertEqual(m.tags, tag)
-        self.assertEqual(str(m), content)
-
-
-class Step1Tests(StepTestCase):
+class Step1Tests(PriceListStepTestCase):
     url = '/data-capture/step/1'
 
     csvpath = FAKE_SCHEDULE_EXAMPLE_PATH
@@ -134,7 +104,7 @@ class Step1Tests(StepTestCase):
         )
 
 
-class Step2Tests(StepTestCase):
+class Step2Tests(PriceListStepTestCase):
     url = '/data-capture/step/2'
 
     def test_login_is_required(self):
@@ -146,7 +116,7 @@ class Step2Tests(StepTestCase):
         self.assertRedirects(res, Step1Tests.url)
 
 
-class Step3Tests(StepTestCase):
+class Step3Tests(PriceListStepTestCase):
     url = '/data-capture/step/3'
 
     rows = [{

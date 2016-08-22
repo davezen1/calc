@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
@@ -12,7 +13,7 @@ from contracts.loaders.region_10 import Region10Loader
 from contracts.models import Contract, BulkUploadContractSource
 
 
-# TODO: restrict all of the routes here to administrator role
+@login_required
 @staff_member_required
 def region_10_step_1(request):
     '''
@@ -53,6 +54,7 @@ def region_10_step_1(request):
     )
 
 
+@login_required
 @staff_member_required
 def region_10_step_2(request):
     '''
@@ -78,6 +80,7 @@ def region_10_step_2(request):
     })
 
 
+@login_required
 @staff_member_required
 @transaction.atomic
 def region_10_step_3(request):

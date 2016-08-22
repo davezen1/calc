@@ -5,7 +5,7 @@ from django.test import TestCase, override_settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 
-from .common import path
+from .common import path, XLSX_CONTENT_TYPE
 from .test_models import ModelTestCase
 from ..schedules import s70, registry
 from contracts.loaders.region_10 import FEDERAL_MIN_CONTRACT_RATE
@@ -14,9 +14,6 @@ from contracts.loaders.region_10 import FEDERAL_MIN_CONTRACT_RATE
 S70 = '%s.Schedule70PriceList' % s70.__name__
 
 S70_XLSX_PATH = path('static', 'data_capture', 's70_example.xlsx')
-
-XLSX_CONTENT_TYPE = ('application/vnd.openxmlformats-'
-                     'officedocument.spreadsheetml.sheet')
 
 
 def uploaded_xlsx_file(content=None):

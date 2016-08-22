@@ -1,11 +1,7 @@
-import logging
-
 from django import forms
 
 from frontend.upload import UploadWidget
 from ..spreadsheet_converter import Region10SpreadsheetConverter
-
-logger = logging.getLogger(__name__)
 
 
 class Region10BulkUploadForm(forms.Form):
@@ -23,7 +19,7 @@ class Region10BulkUploadForm(forms.Form):
 
         file = cleaned_data.get('file')
 
-        if not Region10SpreadsheetConverter(file).is_valid_file():
+        if file and not Region10SpreadsheetConverter(file).is_valid_file():
             raise forms.ValidationError("That file does not appear to be a "
                                         "valid Region 10 export. Try another?")
 
