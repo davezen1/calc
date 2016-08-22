@@ -17,6 +17,12 @@ module.exports = {
     return 'FileReader' in window;
   },
 
+  formValidation() {
+    // http://stackoverflow.com/a/8550926
+    const input = document.createElement('input');
+    return typeof input.checkValidity === 'function';
+  },
+
   // We'd like to make it possible to forcibly degrade components that have
   // a `data-force-degradation` attribute on them or one of their
   // ancestors. This makes it easier to test degraded functionality and

@@ -42,6 +42,9 @@ class UploadInput extends window.HTMLInputElement {
 
   upgrade() {
     this.isUpgraded = true;
+    if (supports.formValidation()) {
+      this.setCustomValidity('You must choose a file.');
+    }
     $(this).on('change', () => {
       this.upgradedValue = this.files[0];
     });
@@ -59,6 +62,10 @@ class UploadInput extends window.HTMLInputElement {
     if (!isFileValid(file, this)) {
       dispatchBubbly(this, 'invalidfile');
       return;
+    }
+
+    if (supports.formValidation()) {
+      this.setCustomValidity('');
     }
 
     this._upgradedValue = file;

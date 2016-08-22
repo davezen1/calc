@@ -8,6 +8,8 @@ import { dispatchBubbly } from './custom-event';
 
 const $ = jQuery;
 
+const VALIDITY_CHECK_INTERVAL = 250;
+
 const MISC_ERROR = 'Sorry, we’re having trouble. ' +
                    'Please try again later or refresh your browser.';
 
@@ -54,6 +56,24 @@ function populateFormData(form, formData) {
   }
 
   return formData;
+}
+
+function willValidate(form) {
+  for (let i = 0; i < form.elements.length; i++) {
+    const el = form.elements[i];
+
+    if (el.type !== 'hidden' && !el.checkValidity()) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function disableSubmitIfInvalid(form) {
+  const $submit = $('button[type=submit]', form);
+
+  $submit.prop('disabled', !willValidate(form));
 }
 
 function bindForm(form) {
@@ -112,6 +132,21 @@ class AjaxForm extends window.HTMLFormElement {
                       supports.isForciblyDegraded(this);
     bindForm(this);
     dispatchBubbly(this, 'ajaxformready');
+  }
+
+  attachedCallback() {
+    if (!this.isDegraded && supports.formValidation()) {
+      const updateValidity = disableSubmitIfInvalid.bind(null, this);
+
+      this._validityCheckInterval = window.setInterval(
+        updateValidity,
+        VALIDITY_CHECK_INTERVAL
+      );
+    }
+  }
+
+  detachedCallback() {
+    window.clearInterval(this._validityCheckInterval);
   }
 }
 
