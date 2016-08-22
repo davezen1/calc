@@ -45,13 +45,10 @@ class Region10SpreadsheetConverter():
         Check that given file is a valid Region 10 data spreadsheet
         '''
         try:
-            book = xlrd.open_workbook(file_contents=self.xls_file.read())
-            sheet = book.sheet_by_index(self.sheet_index)
-            self.get_heading_indices_map(sheet, raises=True)
-        except ValueError as e:
+            self.get_heading_indices_map(raises=True)
+        except:
             return False
 
-        self.xls_file.seek(0)
         return True
 
     def get_metadata(self):
@@ -71,13 +68,13 @@ class Region10SpreadsheetConverter():
         from the related xls_file to the CSV row format expected by
         contracts.loaders.region_10.Region10Loader
         '''
+        heading_indices = self.get_heading_indices_map()
+
         book = xlrd.open_workbook(file_contents=self.xls_file.read())
 
         datemode = book.datemode  # necessary for Excel date parsing
 
         sheet = book.sheet_by_index(self.sheet_index)
-
-        heading_indices = self.get_heading_indices_map(sheet)
 
         # skip the heading row, process the rest
         for rx in range(1, sheet.nrows):
@@ -113,11 +110,13 @@ class Region10SpreadsheetConverter():
         '''
         return list(self.convert_next())
 
-    def get_heading_indices_map(self, sheet, raises=True):
+    def get_heading_indices_map(self, raises=True):
         '''
         Given a sheet, returns a mapping of R10 Excel sheet headings
         to the column indices associated with those fields in that sheet
         '''
+        book = xlrd.open_workbook(file_contents=self.xls_file.read())
+        sheet = book.sheet_by_index(self.sheet_index)
         headings = sheet.row(0)
 
         idx_map = {}
@@ -129,4 +128,5 @@ class Region10SpreadsheetConverter():
         if raises and len(idx_map) != len(self.xl_heading_to_csv_idx_map):
             raise ValueError('Missing expected column(s) in Excel sheet')
 
+        self.xls_file.seek(0)
         return idx_map
