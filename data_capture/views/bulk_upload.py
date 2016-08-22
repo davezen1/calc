@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db import transaction
@@ -13,7 +13,7 @@ from contracts.models import Contract, BulkUploadContractSource
 
 
 # TODO: restrict all of the routes here to administrator role
-@login_required
+@staff_member_required
 def region_10_step_1(request):
     '''
     Start of Region 10 Bulk Upload - Upload the spreadsheet
@@ -53,7 +53,7 @@ def region_10_step_1(request):
     )
 
 
-@login_required
+@staff_member_required
 def region_10_step_2(request):
     '''
     Confirm that the new data should be loaded
@@ -78,7 +78,7 @@ def region_10_step_2(request):
     })
 
 
-@login_required
+@staff_member_required
 @transaction.atomic
 def region_10_step_3(request):
     '''Load data and show success screen'''
