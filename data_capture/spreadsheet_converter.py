@@ -6,8 +6,8 @@ from xlrd.xldate import xldate_as_datetime
 
 class Region10SpreadsheetConverter():
     '''
-    Converts a Region 10 database export XLS/X file to a CSV-like collection
-    of row objects
+    Used to convert Region 10 database export XLS/X file to a CSV-like
+    collection of row objects
     '''
 
     sheet_index = 0
@@ -55,6 +55,9 @@ class Region10SpreadsheetConverter():
         return True
 
     def get_metadata(self):
+        '''
+        Returns a dict containing metadata about the related xls_file
+        '''
         book = xlrd.open_workbook(file_contents=self.xls_file.read())
         sheet = book.sheet_by_index(self.sheet_index)
         self.xls_file.seek(0)
@@ -63,6 +66,11 @@ class Region10SpreadsheetConverter():
         }
 
     def convert_next(self):
+        '''
+        Returns a generator that yields converted rows. The conversion is
+        from the related xls_file to the CSV row format expected by
+        contracts.loaders.region_10.Region10Loader
+        '''
         book = xlrd.open_workbook(file_contents=self.xls_file.read())
 
         datemode = book.datemode  # necessary for Excel date parsing
@@ -101,7 +109,7 @@ class Region10SpreadsheetConverter():
     def convert_file(self):
         '''
         Converts the input Region 10 XLS/X spreadsheet to a list
-        of CSV-like rows
+        of CSV-like rows expected by contracts.loaders.region_10.Region10Loader
         '''
         return list(self.convert_next())
 
