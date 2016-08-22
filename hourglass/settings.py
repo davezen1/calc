@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.humanize',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'debug_toolbar',

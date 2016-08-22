@@ -3,10 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db import transaction
-from django.core.management import call_command
 
 from .. import forms
-from ..utils import Region10SpreadsheetConverter
+from ..spreadsheet_converter import Region10SpreadsheetConverter
 from .common import add_generic_form_error
 from frontend import ajaxform
 from contracts.loaders.region_10 import Region10Loader

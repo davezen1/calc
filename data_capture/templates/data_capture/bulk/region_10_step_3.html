@@ -1,4 +1,5 @@
 {% extends 'data_capture/bulk/region_10_step.html' %}
+{% load humanize %}
 
 {% block subtitle %}View Results{% endblock subtitle %}
 
@@ -6,10 +7,10 @@
 
   <p>Finished!</p>
 
-  <p>{{ num_contracts }} rows of rate information have been loaded.</p>
+  <p>{{ num_contracts|intcomma }} rows of rate information have been loaded.</p>
 
   {% if bad_rows %}
-    <p>{{ bad_rows|length }} were not parsed and could not be loaded.</p>
+    <p>{{ bad_rows|length|intcomma }} were not parsed and could not be loaded.</p>
   {% endif %}
 
   <p>Return to the <a href="/" title="CALC home page">CALC home page</a> to see your new data live.</p>

@@ -2,8 +2,6 @@ from django.conf.urls import patterns, url
 
 from .views import price_list_upload, bulk_upload
 
-# TODO: Split into 'bulk' and 'price_list_upload' or something like that
-
 urlpatterns = patterns(
     '',
     url(r'^step/1$', price_list_upload.step_1, name='step_1'),

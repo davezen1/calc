@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block step_body %}
-{% include 'data_capture/step_1_form.html' %}
+{% include 'data_capture/price_list/step_1_form.html' %}
 
 {% if show_debug_ui %}
 {% load static %}
-<p style="color: gray">
+<p class="dev-note">
   <strong>Developers:</strong>
   Download <a href="{% static 'data_capture/fake_schedule_example.csv' %}"><code>fake_schedule_example.csv</code></a>
   and choose "Fake Schedule" from the drop-down to get started.

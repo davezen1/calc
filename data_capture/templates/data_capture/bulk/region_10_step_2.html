@@ -1,11 +1,12 @@
 {% extends 'data_capture/bulk/region_10_step.html' %}
+{% load humanize %}
 
 {% block subtitle %}Confirm Load{% endblock subtitle %}
 
 {% block step_body %}
   {% with total=file_metadata.num_rows %}
     {% if total %}
-      <p>{{ total }} row{{ total|pluralize }} were found in the uploaded spreadsheet.</p>
+      <p>{{ total|intcomma }} row{{ total|pluralize }} were found in the uploaded spreadsheet.</p>
 
       <p>This will purge all existing Region 10 data and replace it with the new data.</p>
     {% else %}

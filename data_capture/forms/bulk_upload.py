@@ -3,7 +3,7 @@ import logging
 from django import forms
 
 from frontend.upload import UploadWidget
-from ..utils import Region10SpreadsheetConverter
+from ..spreadsheet_converter import Region10SpreadsheetConverter
 
 logger = logging.getLogger(__name__)
 

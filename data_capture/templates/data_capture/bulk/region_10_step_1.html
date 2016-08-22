@@ -12,10 +12,14 @@
 
   {% if show_debug_ui %}
     {% load static %}
-    <p style="color: gray">
+    <p class="dev-note">
       <strong>Developers:</strong>
       Download <a href="{% static 'data_capture/r10_export_sample.xlsx' %}"><code>r10_export_sample.xlsx</code></a>
       to use as an example Region 10 bulk export to load.
+    </p>
+    <p class="dev-note">
+      <strong>NOTE:</strong> If you have the Debug Toolbar enabled, you will not be able to import large datasets.
+      You can disable it (and other dev/debug affordances) by setting <code>HIDE_DEBUG_UI=yup</code> in your local <code>.env</code> file.
     </p>
   {% endif %}
 {% endblock step_body %}
