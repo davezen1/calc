@@ -161,6 +161,7 @@ class Step3Tests(StepTestCase):
         'contract_number': 'GS-123-4567',
         'vendor_name': 'foo',
         'contractor_site': 'Customer',
+        'is_small_business': False
     }
 
     def test_login_is_required(self):

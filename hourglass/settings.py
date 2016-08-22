@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import dj_database_url
+import dj_email_url
 from dotenv import load_dotenv
 
 from .settings_utils import load_cups_from_vcap_services, get_whitelisted_ips
@@ -34,14 +35,44 @@ if DEBUG:
         'SECRET_KEY',
         'I am an insecure secret key intended ONLY for dev/testing.'
     )
+    os.environ.setdefault('EMAIL_URL', 'console:')
+
+
+email_config = dj_email_url.config()
+
+EMAIL_FILE_PATH = email_config['EMAIL_FILE_PATH']
+EMAIL_HOST_USER = email_config['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = email_config['EMAIL_HOST_PASSWORD']
+EMAIL_HOST = email_config['EMAIL_HOST']
+EMAIL_PORT = email_config['EMAIL_PORT']
+EMAIL_BACKEND = email_config['EMAIL_BACKEND']
+EMAIL_USE_TLS = email_config['EMAIL_USE_TLS']
+EMAIL_USE_SSL = email_config['EMAIL_USE_SSL']
 
 API_HOST = os.environ.get('API_HOST', '/api/')
 
-TEMPLATE_DEBUG = DEBUG
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'hourglass/templates'),
-    os.path.join(BASE_DIR, 'data_explorer/templates'),
-)
+TEMPLATES = [{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [
+        os.path.join(BASE_DIR, 'hourglass/templates'),
+    ],
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'context_processors': [
+            'hourglass.context_processors.api_host',
+            'hourglass.context_processors.show_debug_ui',
+            "django.contrib.auth.context_processors.auth",
+            "django.template.context_processors.debug",
+            "django.template.context_processors.i18n",
+            "django.template.context_processors.media",
+            'django.template.context_processors.request',
+            "django.template.context_processors.static",
+            "django.template.context_processors.tz",
+            "django.contrib.messages.context_processors.messages",
+            "django.template.context_processors.request",
+        ],
+    },
+}]
 
 ALLOWED_HOSTS = ['*']
 
@@ -92,20 +123,6 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     'uaa_client.authentication.UaaBackend',
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'hourglass.context_processors.api_host',
-    'hourglass.context_processors.show_debug_ui',
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    'django.core.context_processors.request',
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages",
-    "django.template.context_processors.request",
 )
 
 ROOT_URLCONF = 'hourglass.urls'

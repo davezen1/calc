@@ -2,6 +2,9 @@
 
 const $ = jQuery;
 
+const MISC_ERROR = 'Sorry, we’re having trouble. ' +
+                   'Please try again later or refresh your browser.';
+
 let delegate = {
   redirect(url) {
     window.location = url;
@@ -52,7 +55,7 @@ function bindForm() {
   }
 
   // This is mostly just for test suites to use.
-  $('form').data('ajaxform', self);
+  $(form).data('ajaxform', self);
 
   // Disable the submit button until a file is selected.
   $submit.prop('disabled', true);
@@ -108,13 +111,13 @@ function bindForm() {
         } else if (data.redirect_url) {
           delegate.redirect(data.redirect_url);
         } else {
-          delegate.alert(`Invalid server response: ${data}`);
+          delegate.alert(MISC_ERROR);
           $(form).removeClass('submit-in-progress');
         }
       });
 
       req.fail(() => {
-        delegate.alert('An error occurred when submitting your data.');
+        delegate.alert(MISC_ERROR);
         $(form).removeClass('submit-in-progress');
       });
     }
@@ -129,6 +132,7 @@ exports.setDelegate = newDelegate => {
   delegate = newDelegate;
   return delegate;
 };
+exports.MISC_ERROR = MISC_ERROR;
 exports.getForm = getForm;
 exports.bindForm = bindForm;
 

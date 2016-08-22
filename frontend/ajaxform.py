@@ -5,7 +5,6 @@
     This module is tightly coupled to ajaxform.js.
 '''
 
-from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
@@ -42,11 +41,11 @@ def render(request, context, template_name, ajax_template_name):
     into it.
     '''
 
-    final_context = RequestContext(request, context)
-
     if request.is_ajax():
         return JsonResponse({
-            'form_html': render_to_string(ajax_template_name, final_context)
+            'form_html': render_to_string(ajax_template_name, context,
+                                          request=request)
         })
 
-    return HttpResponse(render_to_string(template_name, final_context))
+    return HttpResponse(render_to_string(template_name, context,
+                                         request=request))

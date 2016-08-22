@@ -84,9 +84,9 @@ class ModelsTests(ModelTestCase):
             schedule=FAKE_SCHEDULE,
         )
         p.save()
-        p.rows.add(self.create_row(
-            labor_category='Software Engineer'
-        ))
+        row = self.create_row(labor_category='Software Engineer',
+                              price_list=p)
+        row.save()
         p.approve()
 
         self.assertEqual(Contract.objects.all().count(), 1)
@@ -101,7 +101,8 @@ class ModelsTests(ModelTestCase):
     def test_unapprove_works(self):
         p = self.create_price_list()
         p.save()
-        p.rows.add(self.create_row())
+        row = self.create_row(price_list=p)
+        row.save()
         p.approve()
         p.unapprove()
 

@@ -33,6 +33,12 @@ label input[type="radio"] {
   width: auto; // WDS override for width: 100%;
 }
 
+/* A <ul> holds a Django-rendered list of radio buttons. */
+
+form ul {
+  list-style-type: none;
+}
+
 /* TODO: Django's default form rendering uses a <ul class="errorlist">
    for errors, and <span class="helptext"> for help text. We should either
    style them properly, or render our own markup. The following are some

@@ -217,6 +217,11 @@ string), the boolean is true; otherwise, it's false.
 * `DATABASE_URL` is the URL for the database, as per the
   [DJ-Database-URL schema][].
 
+* `EMAIL_URL` is the URL for the service to use when sending
+  email, as per the [dj-email-url schema][]. When `DEBUG` is true,
+  this defaults to `console:`. The setting can easily be manually
+  tested via the `manage.py sendtestemail` command.
+
 * `ENABLE_SEO_INDEXING` is a boolean value that indicates whether to
   indicate to search engines that they can index the site.
 
@@ -405,6 +410,7 @@ for other than small business.
 [SASS]: http://sass-lang.com/
 [`deploy.md`]: https://github.com/18F/calc/blob/master/deploy.md
 [DJ-Database-URL schema]: https://github.com/kennethreitz/dj-database-url#url-schema
+[dj-email-url schema]: https://github.com/migonzalvar/dj-email-url#supported-backends
 [pytest]: https://pytest.org/latest/usage.html
 [docker-machine-cloud]: https://docs.docker.com/machine/get-started-cloud/
 [Django Debug Toolbar]: https://github.com/jazzband/django-debug-toolbar/

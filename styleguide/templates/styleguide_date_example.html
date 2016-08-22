@@ -1,0 +1,14 @@
+<form method="post"
+      action="{% url 'styleguide:date' %}">
+  {% csrf_token %}
+
+  {% with form=date_form %}
+    <fieldset>
+      <legend>{{ form.date.label }}</legend>
+      {{ form.date.errors }}
+      {{ form.date }}
+    </fieldset>
+  {% endwith %}
+
+  <button type="submit" class="button-primary">Submit</button>
+</form>

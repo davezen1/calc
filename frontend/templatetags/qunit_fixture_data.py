@@ -1,6 +1,7 @@
 import json
 from django import template
 from django import forms
+from django.utils.safestring import mark_safe
 
 from ..upload import UploadWidget
 
@@ -36,4 +37,4 @@ def qunit_fixture_data_json():
         'AJAXFORM_TESTS_HTML': AjaxformTestsForm().render()
     }
 
-    return json.dumps(data)
+    return mark_safe(json.dumps(data))

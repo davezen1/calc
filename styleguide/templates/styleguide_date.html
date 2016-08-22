@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="container">
+  <h1>Date Widget Example</h1>
+
+  {% if date_form_is_valid %}
+    <p>Form submitted successfully.</p>
+  {% endif %}
+
+  {% include "styleguide_date_example.html" %}
+</div>
+
+<script src="{% static 'frontend/built/js/data-capture/index.min.js' %}"></script>
+{% endblock %}

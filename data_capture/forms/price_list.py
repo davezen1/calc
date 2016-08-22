@@ -3,6 +3,7 @@ from django import forms
 from ..models import SubmittedPriceList
 from ..schedules import registry
 from frontend.upload import UploadWidget
+from frontend.date import SplitDateField
 
 
 class Step1Form(forms.Form):
@@ -32,6 +33,18 @@ class Step1Form(forms.Form):
 
 
 class Step3Form(forms.ModelForm):
+    is_small_business = forms.ChoiceField(
+        label='Business size',
+        choices=[
+            (True, 'Small business'),
+            (False, 'Not a small business'),
+        ],
+        widget=forms.widgets.RadioSelect,
+    )
+
+    contract_start = SplitDateField(required=False)
+    contract_end = SplitDateField(required=False)
+
     class Meta:
         model = SubmittedPriceList
         fields = [

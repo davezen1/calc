@@ -177,9 +177,7 @@ advancedTest('500 results in alert', assert => {
 
   server.requests[0].respond(500);
 
-  assert.ok(delegate.alert.calledWith(
-    'An error occurred when submitting your data.'
-  ));
+  assert.ok(delegate.alert.calledWith(ajaxform.MISC_ERROR));
 });
 
 advancedTest('unrecognized 200 results in alert', assert => {
@@ -192,7 +190,5 @@ advancedTest('unrecognized 200 results in alert', assert => {
 
   server.requests[0].respond(200);
 
-  assert.ok(delegate.alert.calledWith(
-    'Invalid server response: '
-  ));
+  assert.ok(delegate.alert.calledWith(ajaxform.MISC_ERROR));
 });
