@@ -65,9 +65,12 @@ class TestRegion10SpreadsheetConverter(TestCase):
 
     def test_get_heading_indices_map_raises(self):
         converter = Region10SpreadsheetConverter(xls_file=r10_file())
-        converter.xl_heading_to_csv_idx_map = {'blah': 0}
-        with self.assertRaises(ValueError):
+        converter.xl_heading_to_csv_idx_map = {'blah': 0, 'boop': 1}
+        with self.assertRaises(ValueError) as cm:
             converter.get_heading_indices_map(raises=True)
+            self.assertIn('Missing columns', cm.exception)
+            self.assertIn('blah', cm.exception)
+            self.assertIn('boop', cm.exception)
 
     def test_convert_next(self):
         count = 0

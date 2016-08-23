@@ -125,8 +125,14 @@ class Region10SpreadsheetConverter():
             if cell.value in self.xl_heading_to_csv_idx_map:
                 idx_map[cell.value] = i
 
-        if raises and len(idx_map) != len(self.xl_heading_to_csv_idx_map):
-            raise ValueError('Missing expected column(s) in Excel sheet')
+        if raises:
+            missing_headers = []
+            for xl_heading in self.xl_heading_to_csv_idx_map:
+                if xl_heading not in idx_map:
+                    missing_headers.append(xl_heading)
+            if missing_headers:
+                raise ValueError(
+                    'Missing columns: {}'.format(', '.join(missing_headers)))
 
         self.xls_file.seek(0)
         return idx_map
