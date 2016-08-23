@@ -48,8 +48,8 @@ def region_10_step_1(request):
             'step_number': 1,
             'form': form,
         },
-        template_name='data_capture/bulk/region_10_step_1.html',
-        ajax_template_name='data_capture/bulk/region_10_step_1_form.html',
+        template_name='data_capture/bulk_upload/region_10_step_1.html',
+        ajax_template_name='data_capture/bulk_upload/region_10_step_1_form.html',
     )
 
 
@@ -72,7 +72,7 @@ def region_10_step_2(request):
 
     file_metadata = Region10SpreadsheetConverter(file).get_metadata()
 
-    return render(request, 'data_capture/bulk/region_10_step_2.html', {
+    return render(request, 'data_capture/bulk_upload/region_10_step_2.html', {
         'step_number': 2,
         'file_metadata': file_metadata,
     })
@@ -120,7 +120,7 @@ def region_10_step_3(request):
     # remove the upload_source_id from session
     del request.session['data_capture:upload_source_id']
 
-    return render(request, 'data_capture/bulk/region_10_step_3.html', {
+    return render(request, 'data_capture/bulk_upload/region_10_step_3.html', {
         'step_number': 3,
         'num_bad_rows': len(bad_rows),
         'num_contracts': len(contracts),

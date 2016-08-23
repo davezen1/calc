@@ -1,4 +1,4 @@
-{% extends 'data_capture/bulk/region_10_step.html' %}
+{% extends 'data_capture/bulk_upload/region_10_step.html' %}
 
 {% block subtitle %}Select File{% endblock %}
 
@@ -8,7 +8,7 @@
 {% endblock step_heading %}
 
 {% block step_body %}
-  {% include 'data_capture/bulk/region_10_step_1_form.html' %}
+  {% include 'data_capture/bulk_upload/region_10_step_1_form.html' %}
 
   {% if show_debug_ui %}
     {% load static %}
