@@ -49,7 +49,8 @@ def region_10_step_1(request):
             'form': form,
         },
         template_name='data_capture/bulk_upload/region_10_step_1.html',
-        ajax_template_name='data_capture/bulk_upload/region_10_step_1_form.html',
+        ajax_template_name='data_capture/bulk_upload/'
+                           'region_10_step_1_form.html',
     )
 
 
