@@ -4,7 +4,7 @@ dj-email-url==0.0.8
 django-click==1.2.0
 Django==1.8.14
 django-cors-headers==1.1.0
-djangorestframework==3.4.3
+djangorestframework==3.9.1
 djorm-ext-pgfulltext==0.9.3
 model-mommy==1.2.6
 flake8==3.0.4
